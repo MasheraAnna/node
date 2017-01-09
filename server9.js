@@ -41,6 +41,27 @@ function sendFileSafe(filePath, res){
 		return;
 	}
 	// шаг 3 - получаем полный путь для работы с файлом
-	
+	filePath = path.normalize(path.join(ROOT, filePath));
 
+	// шаг 4 - проверим, что лежит по этому пути
+	fs.stat(filePath, function(err, stats){
+		if (err || !stats.isFile()){
+			res.statusCode = 404;
+			res.end("File not found");
+			return;
+		}
+
+		sendFile(filePath, res);
+	});
+}
+
+
+// Эту функцию использовать нельзя - она плохо подходит для отправки файлов. хорошая функция будет дальше
+
+function sendFile(filePath, res){
+	if (err) throw err;
+
+	var mime = require('mime').lookup(filePath);
+	res.setHeader('Content-Type', mime + '; charset = utf-8');
+	res.end(content);
 }
