@@ -41,6 +41,31 @@ function sendFileSafe(filePath, res){
 		return;
 	}
 	// шаг 3 - получаем полный путь для работы с файлом
-	
+	filePath = path.normalize(path.join(ROOT, filePath));
 
+	// проверим: путь должен начинаться с root
+	if (filePath.indexOf(ROOT) !=0 ){
+		res.statusCode = 404;
+		res.end("File not found");
+		return;
+	}
+
+	// проверим, что находится по этому пути:
+	fs.stat(filePath, function(err, stats){
+		if (err || !stats.isFile()){
+			res.statusCode = 404;
+			res.end("File not found");
+			return;
+		}
+
+		sendFile(filePath, res);
+	});
+}
+
+function sendFile(filePath, res){
+	fs.readfile(filePath, function(err, content){
+		if (err) throw err;
+
+		var mime = require('mime')
+	})
 }
