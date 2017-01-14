@@ -5,8 +5,6 @@ var config = require('config');
 var log = require('./libs/log')(module);
 var bodyParser = require('body-parser');
 
-
-
 var app = express();
 app.set('port', config.get('port'));
 
