@@ -1,5 +1,5 @@
 var path = require ('path');
-var util = reauire ('util');
+var util = require ('util');
 var http = require ('http');
 
 // ошибки для выдачи посетителю

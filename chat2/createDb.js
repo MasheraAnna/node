@@ -42,4 +42,3 @@ function createUsers(callback){
 		user.save(callback);
 	}, callback);
 };
-

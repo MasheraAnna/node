@@ -4,7 +4,7 @@ var path = require('path');
 var config = require('config');
 var log = require('./libs/log')(module);
 var bodyParser = require('body-parser');
-var HttpError = require('error').HttpError;
+var HttpError = require('./error').HttpError;
 
 var app = express();
 app.set('port', config.get('port'));
@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(require('./middleware/sendHttpError'))
 
-require('./routs')(app);
+require('./routes')(app);
 
 app.use(function(err, req, res, next){
 	if (typeof err == 'number'){

@@ -13,15 +13,8 @@
     "ejs": "~2.4.1",
     "ejs-locals": "~1.0.2",
     "express": "~4.13.4",
-<<<<<<< HEAD
-=======
     "mongodb": "2.2.21",
-<<<<<<< HEAD
->>>>>>> cc3a6a51df5c45fd0f398958e80962b2d421d181
-    "mongoose": "4.7.6",
-=======
     "mongoose": "4.5.9",
->>>>>>> ddd04dd4029780e3c741876bfe958f3b6a6b5217
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.0",
     "winston": "2.3.0"
