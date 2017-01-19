@@ -1,5 +1,4 @@
 var express = require('express');
-var cookieParser = require('cookie-parser');
 var session = require('express-session');
 
 var http = require ('http');
@@ -8,7 +7,7 @@ var config = require('config');
 var log = require('./libs/log')(module);
 
 var bodyParser = require('body-parser');
-var cookieSession = require('cookie-session');
+
 
 var HttpError = require('./error').HttpError;
 var mongoose = require('./libs/mongoose');
@@ -24,22 +23,18 @@ app.set('view engine', "ejs");
 
 
 // middlewares
-
-
 app.use(bodyParser.raw());
-
 app.use(express.static(path.join(__dirname, "public")));
 
-var MongoDBStore = require('connect-mongodb')(session);
-var store = new MongoDBStore(
-	{
+const MongoStore = require('connect-mongo')(session);
+var store = new MongoStore({ mongooseConnection: mongoose.connection });
 
-	});
-
-app.use(cookieSession({
+app.use(session({
+  resave: false,
+  saveUninitialized: false,
 	secret: config.get('session:secret'),
 	name: config.get('session:name'),
-	options: config.get('session:options'),
+	cookie: config.get('session:options'),
 	store: store
 }));
 
