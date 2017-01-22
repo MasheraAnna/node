@@ -1,4 +1,5 @@
-var User = require ("models").User;
+var User = require ("../models/user").User;
+var HttpError = require('../error').HttpError;
 var async = require ("async");
 
 exports.get = function(req, res){
@@ -30,29 +31,17 @@ exports.post = function(req, res, next){
 					next(new HttpError(403, "Пароль неверен"));
 				}
 			} else {
-				var user = new User()
-			}
-		}
-		], 
-		function(err){
-
-		});
-	User.findOne({username: username}, function (err, user){
-		if (err) return next(err);
-		if (user){
-			if (user.checkPassword(password)){
-				// ... 200
-			} else {
-				// ... 403 Forbidden
-			}
-		} else {
-			var user = new User({username: username, password: password});
-			user.save(function(err){
+				var user = new User({username: username, password: password});
+				user.save(function(err){
 				if (err) return next (err);
-				// 200 OK
-			})
+				callback(null, user);
+				});
+			}
 		}
-	})
-
-	}
+	], function(err, user){
+		if (err) return next(err);
+		req.session.user = user._id;
+		res.send({});
+	});
+}
 
