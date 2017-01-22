@@ -1,4 +1,5 @@
 var User = require ("models").User;
+var async = require ("async");
 
 exports.get = function(req, res){
 	  res.render('login');
@@ -16,7 +17,28 @@ exports.post = function(req, res, next){
 	//	Да - сохранить _id пользователя в сессии: session.user = user._id и ответить 200 
 	//	Нет - вывести ошибку (403 или другую)
 
+	async.waterfall([
+		function (callback){
+			console.log(callback);
+			User.findOne({username: username}, callback);
+		},
+		function(user, callback){
+			if (user) {
+				if (user.checkPassword(password)){
+					callback(null, user);
+				} else {
+					next(new HttpError(403, "Пароль неверен"));
+				}
+			} else {
+				var user = new User()
+			}
+		}
+		], 
+		function(err){
+
+		});
 	User.findOne({username: username}, function (err, user){
+		if (err) return next(err);
 		if (user){
 			if (user.checkPassword(password)){
 				// ... 200
