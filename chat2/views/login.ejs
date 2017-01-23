@@ -45,13 +45,13 @@
 			complete: function(){
 				$(":submit", form).button("reset");
 			},
-			statusCode:{
+			statusCode: {
 				200: function(){
 					form.html("Вы вошли в сайт").addClass("alert-success");
 					window.location.href = "/chat";
 				},
 				403: function(jqXHR){
-					var.error = JSON.parse(jqXHR.responseText);
+					var error = JSON.parse(jqXHR.responseText);
 					$(".error", form).html(error.message);
 				}
 			}
