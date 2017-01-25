@@ -12,9 +12,6 @@ exports.post = function(req, res, next){
 	var username = req.body.username;
 	var password = req.body.password;
 
-	console.log(req);
-	  
-
 	// 1. Получить посетителя с таким Username из базы
 	// 2. Такой посетитель найден?
 	// 	Да - сверить пароль вызовом user.checkPassword
@@ -23,20 +20,17 @@ exports.post = function(req, res, next){
 	//	Да - сохранить _id пользователя в сессии: session.user = user._id и ответить 200 
 	//	Нет - вывести ошибку (403 или другую)
 
-	// User.authorize(username, password, function(err, user){
-	// 	if(err){
-	// 		if (err instanceof AuthError){
-	// 			return next(new HttpError(403, err.message));
-	// 		} else {
-	// 			return next(err);
-	// 		}
-	// 	}
+	User.authorize(username, password, function(err, user){
+		if(err){
+			if (err instanceof AuthError){
+				return next(new HttpError(403, err.message));
+			} else {
+				return next(err);
+			}
+		}
 
-	// 	req.session.user = user._id;
-	// 	res.send({});
-	// });
-
-	req.session.user = "1";
-	res.send({});
+		req.session.user = user._id;
+		res.send({});
+	});
 }
 

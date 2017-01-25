@@ -25,18 +25,18 @@ app.set('view engine', "ejs");
 // middlewares
 
 // вот тут ему видимо что-то нужно передать.....??????????????????????????????????
+
 app.use(bodyParser.raw());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // ключевой вопрос, как при помощи bodyParser записать данные в req.body
-
+// а req - это часть экспреса, интересно?
 
 app.use(express.static(path.join(__dirname, "public")));
 
 const MongoStore = require('connect-mongo')(session);
 var store = new MongoStore({ mongooseConnection: mongoose.connection });
-
-// ключевой вопрос к сессиям - это как засунуть в переменную req.session.user значение userId
-
 
 app.use(session({
   resave: false,
