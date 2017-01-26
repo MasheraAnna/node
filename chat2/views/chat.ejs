@@ -4,3 +4,12 @@
 
 <p class="lead"> Здесь будет чат! </p>
 <p> Добро пожаловать, <%=userId%> </p>
+
+<script src="../node_modules/socket.io/lib/socket.js"></script>
+<script>
+	var socket = io.connect();
+	socket.on('news', function(data){
+		console.log(data);
+		socket.emit('my other event', { my: 'data'});
+	});
+</script>
