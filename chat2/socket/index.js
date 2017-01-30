@@ -62,11 +62,18 @@ function loadUser(sid, callback){
 module.exports = function(server){
 	var io = require('socket.io').listen(server);
 	io.set('origins', "localhost:*");
-
-	io.sockets.on('connection', function(socket){
-		console.log(socket.handshake);	
+	io.sockets.on('connection', function(socket){	
 	});
 
+	io.use(function(socket, next) {
+	  var handshakeData = socket.request.headers.cookie;
+	  console.log(handshakeData);
+	  // make sure the handshake data looks good as before
+	  // if error do this:
+	    // next(new Error('not authorized');
+	  // else just call next
+	  next();
+	});
 
 	// io.set('authorisation', function(handshake, callback){
 	// 	async.waterfall([
