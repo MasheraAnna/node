@@ -10,7 +10,7 @@ var bodyParser = require('body-parser');
 
 
 var HttpError = require('./error').HttpError;
-var mongoose = require('./libs/mongoose');
+//var mongoose = require('./libs/mongoose');
 
 var app = express();
 app.set('port', config.get('port'));
@@ -24,8 +24,6 @@ app.set('view engine', "ejs");
 
 // middlewares
 
-// вот тут ему видимо что-то нужно передать.....??????????????????????????????????
-
 app.use(bodyParser.raw());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -35,8 +33,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, "public")));
 
-const MongoStore = require('connect-mongo')(session);
-var store = new MongoStore({ mongooseConnection: mongoose.connection });
+// const MongoStore = require('connect-mongo')(session);
+// var store = new MongoStore({ mongooseConnection: mongoose.connection });
+
+var store = require('./libs/sessionStore');
 
 app.use(session({
   resave: false,
@@ -53,6 +53,7 @@ app.use(session({
 // });
 
 app.use(require('./middleware/sendHttpError'));
+app.use(require('./middleware/loadUser'));
 
 require('./routes')(app);
 
@@ -79,11 +80,4 @@ var server = http.createServer(app).listen(app.get('port'), function(){
   log.info('Express server is listenning on port ' + config.get('port'));
 });
 
-var io = require('socket.io').listen(server);
-
-io.sockets.on('connection', function(socket){
-	socket.emit('news', {hello: 'world'});
-	socket.on('my other event', function(data){
-		console.log(data);
-	});
-});
+require('./socket')(server);

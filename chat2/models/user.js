@@ -49,7 +49,7 @@ schema.statics.authorize = function(username, password, callback){
 	var User = this;
 	async.waterfall([
 		function (callback){
-			console.log(callback);
+			
 			User.findOne({username: username}, callback);
 		},
 		function(user, callback){
